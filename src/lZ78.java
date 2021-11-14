@@ -28,7 +28,7 @@ public class lZ78 {
         write.close();
     }
 
-    public void FWriteD(File file,String str) throws Exception {
+    public void FWrite(File file,String str) throws Exception {
         FileOutputStream write = new FileOutputStream(file);
         byte[] s = str.getBytes();
         write.write(s);
@@ -38,12 +38,14 @@ public class lZ78 {
     public void  LZ78compress(String str){
         Vector<String> dic = new Vector<>();
         tags = new Vector<>();
+
         String check="";
         dic.add("");
         int ptr =0;
         for(int i=0;i<str.length();i++){
           check+=str.charAt(i);
           int index = dic.indexOf(check);
+
           if(index==-1){
               String temp="<";
               dic.add(check);
@@ -60,12 +62,18 @@ public class lZ78 {
                   String s = Integer.toString(ptr);
                   temp+=(s +","+"NULL"+">");
                   tags.add(temp);
-              }else continue;
+              }
+              else continue;
           }
         }
         for(int i=0;i<tags.size();i++){
             System.out.println(tags.get(i));
         }
+
+        System.out.println("\n\n     Compare Size\n    --------------");
+        System.out.println("Original Size = "+str.length() * 8+" Bits");
+        System.out.println("Compressed Size = "+tags.size() * (3+3+8)+" Bits\n");
+
     }
 
     public String LZ78decompress(Vector<String> tags){
@@ -132,27 +140,11 @@ public class lZ78 {
                     v.add(str);
                 }
                 String s1 =lZ78.LZ78decompress(v);
-                lZ78.FWriteD(f3,s1);
+                lZ78.FWrite(f3,s1);
 
                 break;
             default:
                 System.out.println("invalid input!");
         }
-//
-////        String str;
-////        str = "ABAABABAABABBBBBBBBBBA";
-////
-////        LZ78compress(str);
-//
-//        Vector<String> v = new Vector<>();
-//
-//        System.out.print("Enter Number of tags : ");
-//        Scanner input = new Scanner(System.in);
-//        int n=input.nextInt();
-//        System.out.println("Enter the tags in this form : <1,1,A>..");
-//        //EX:<0,A> <0,B> <1,A> <2,A> <4,A> <4,B> <2,B> <7,B> <8,B> <0,C>
-//
-
-
     }
 }
